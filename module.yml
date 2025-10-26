@@ -7,7 +7,7 @@ module:
   license: MIT
   category: Accounting
   icon: calculator
-  repository: https://github.com/linearbits/erp-accounting-module
+  repository: https://github.com/ahmedsamirahmedsamir/erp-accounting-module
   
   # Database tables this module uses
   database:
