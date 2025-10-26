@@ -129,7 +129,7 @@ module:
         methods: [GET, PUT, DELETE]
         handler: handlers.FiscalPeriodHandler
   
-  # Frontend routes
+  # Frontend routes (only includes implemented components)
   frontend:
     routes:
       - path: /accounting
@@ -138,48 +138,8 @@ module:
       - path: /accounting/accounts
         component: ChartOfAccounts
         title: Chart of Accounts
-      - path: /accounting/transactions
-        component: TransactionList
-        title: Transactions
-      - path: /accounting/transactions/new
-        component: TransactionForm
-        title: New Transaction
-      - path: /accounting/invoices
-        component: InvoiceList
-        title: Invoices
-      - path: /accounting/invoices/new
-        component: InvoiceForm
-        title: New Invoice
-      - path: /accounting/payments
-        component: PaymentList
-        title: Payments
-      - path: /accounting/payments/new
-        component: PaymentForm
-        title: New Payment
-      - path: /accounting/budgets
-        component: BudgetList
-        title: Budgets
-      - path: /accounting/budgets/new
-        component: BudgetForm
-        title: New Budget
-      - path: /accounting/reports
-        component: ReportList
-        title: Reports
-      - path: /accounting/journal-entries
-        component: JournalEntryList
-        title: Journal Entries
-      - path: /accounting/journal-entries/new
-        component: JournalEntryForm
-        title: New Journal Entry
-      - path: /accounting/reconciliations
-        component: ReconciliationList
-        title: Reconciliations
-      - path: /accounting/tax-codes
-        component: TaxCodeList
-        title: Tax Codes
-      - path: /accounting/fiscal-periods
-        component: FiscalPeriodList
-        title: Fiscal Periods
+      # Additional routes will be added as components are implemented
+      # See docs/modules/FRONTEND-ROUTES-AUDIT.md for planned components
   
   # Menu items
   menu:

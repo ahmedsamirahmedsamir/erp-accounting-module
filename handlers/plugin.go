@@ -155,6 +155,4 @@ func (p *AccountingPlugin) matchRoute(pattern, actual string) bool {
 
 // Handler is the exported symbol that the plugin loader looks for
 // It must return a PluginHandler interface that implements our methods
-var Handler = func() interface{} {
-	return NewAccountingPlugin()
-}
+var Handler = NewAccountingPlugin

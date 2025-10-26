@@ -11,5 +11,5 @@ require (
 
 require go.uber.org/multierr v1.11.0 // indirect
 
-// Use local module-sdk during development
-replace github.com/linearbits/erp-backend/pkg/module-sdk => ../erp/backend/pkg/module-sdk
+// Use local SDK
+replace github.com/linearbits/erp-backend/pkg/module-sdk => /Users/ahmedsamir/ai-workspace/linearbits-erp/erp/backend/pkg/module-sdk

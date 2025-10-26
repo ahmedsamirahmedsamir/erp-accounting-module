@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Search, Filter, Calculator, Edit, Trash2, Eye, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
-import { DataTable } from '../../components/table/DataTable'
-import { api } from '../../lib/api'
+import { DataTable, api } from '@erp-modules/shared'
 
 interface ChartOfAccount {
   id: string
