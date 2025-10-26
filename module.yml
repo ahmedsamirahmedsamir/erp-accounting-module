@@ -1,0 +1,327 @@
+module:
+  code: accounting
+  name: Accounting
+  version: 1.0.0
+  description: Complete accounting system with general ledger, accounts payable/receivable, and financial reporting
+  author: LinearBits
+  license: MIT
+  category: Accounting
+  icon: calculator
+  repository: https://github.com/linearbits/erp-accounting-module
+  
+  # Database tables this module uses
+  database:
+    # Core tables (shared across modules)
+    core_tables:
+      - customers
+    # Module-specific tables
+    tables:
+      - chart_of_accounts
+      - accounting_transactions
+      - accounting_invoices
+      - accounting_payments
+      - accounting_budgets
+      - accounting_reports
+      - accounting_journal_entries
+      - accounting_reconciliations
+      - accounting_tax_codes
+      - accounting_fiscal_periods
+  
+  # Permissions required
+  permissions:
+    - accounting.accounts.view
+    - accounting.accounts.create
+    - accounting.accounts.edit
+    - accounting.accounts.delete
+    - accounting.transactions.view
+    - accounting.transactions.create
+    - accounting.transactions.edit
+    - accounting.transactions.delete
+    - accounting.invoices.view
+    - accounting.invoices.create
+    - accounting.invoices.edit
+    - accounting.invoices.delete
+    - accounting.payments.view
+    - accounting.payments.create
+    - accounting.payments.edit
+    - accounting.payments.delete
+    - accounting.budgets.view
+    - accounting.budgets.create
+    - accounting.budgets.edit
+    - accounting.budgets.delete
+    - accounting.reports.view
+    - accounting.reports.create
+    - accounting.journal_entries.view
+    - accounting.journal_entries.create
+    - accounting.journal_entries.edit
+    - accounting.journal_entries.delete
+    - accounting.reconciliations.view
+    - accounting.reconciliations.create
+    - accounting.reconciliations.edit
+    - accounting.tax_codes.view
+    - accounting.tax_codes.create
+    - accounting.tax_codes.edit
+    - accounting.tax_codes.delete
+    - accounting.fiscal_periods.view
+    - accounting.fiscal_periods.create
+    - accounting.fiscal_periods.edit
+    - accounting.fiscal_periods.delete
+  
+  # API routes
+  api:
+    prefix: /api/v1/accounting
+    routes:
+      - path: /accounts
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.ChartOfAccountsHandler
+      - path: /accounts/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.ChartOfAccountsHandler
+      - path: /transactions
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.TransactionHandler
+      - path: /transactions/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.TransactionHandler
+      - path: /invoices
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.InvoiceHandler
+      - path: /invoices/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.InvoiceHandler
+      - path: /payments
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.PaymentHandler
+      - path: /payments/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.PaymentHandler
+      - path: /budgets
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.BudgetHandler
+      - path: /budgets/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.BudgetHandler
+      - path: /reports
+        methods: [GET, POST]
+        handler: handlers.ReportHandler
+      - path: /journal-entries
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.JournalEntryHandler
+      - path: /journal-entries/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.JournalEntryHandler
+      - path: /reconciliations
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.ReconciliationHandler
+      - path: /reconciliations/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.ReconciliationHandler
+      - path: /tax-codes
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.TaxCodeHandler
+      - path: /tax-codes/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.TaxCodeHandler
+      - path: /fiscal-periods
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.FiscalPeriodHandler
+      - path: /fiscal-periods/{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.FiscalPeriodHandler
+  
+  # Frontend routes
+  frontend:
+    routes:
+      - path: /accounting
+        component: AccountingDashboard
+        title: Accounting Dashboard
+      - path: /accounting/accounts
+        component: ChartOfAccounts
+        title: Chart of Accounts
+      - path: /accounting/transactions
+        component: TransactionList
+        title: Transactions
+      - path: /accounting/transactions/new
+        component: TransactionForm
+        title: New Transaction
+      - path: /accounting/invoices
+        component: InvoiceList
+        title: Invoices
+      - path: /accounting/invoices/new
+        component: InvoiceForm
+        title: New Invoice
+      - path: /accounting/payments
+        component: PaymentList
+        title: Payments
+      - path: /accounting/payments/new
+        component: PaymentForm
+        title: New Payment
+      - path: /accounting/budgets
+        component: BudgetList
+        title: Budgets
+      - path: /accounting/budgets/new
+        component: BudgetForm
+        title: New Budget
+      - path: /accounting/reports
+        component: ReportList
+        title: Reports
+      - path: /accounting/journal-entries
+        component: JournalEntryList
+        title: Journal Entries
+      - path: /accounting/journal-entries/new
+        component: JournalEntryForm
+        title: New Journal Entry
+      - path: /accounting/reconciliations
+        component: ReconciliationList
+        title: Reconciliations
+      - path: /accounting/tax-codes
+        component: TaxCodeList
+        title: Tax Codes
+      - path: /accounting/fiscal-periods
+        component: FiscalPeriodList
+        title: Fiscal Periods
+  
+  # Menu items
+  menu:
+    - label: Accounting
+      icon: calculator
+      path: /accounting
+      children:
+        - label: Dashboard
+          path: /accounting
+        - label: Chart of Accounts
+          path: /accounting/accounts
+        - label: Transactions
+          path: /accounting/transactions
+        - label: Invoices
+          path: /accounting/invoices
+        - label: Payments
+          path: /accounting/payments
+        - label: Budgets
+          path: /accounting/budgets
+        - label: Reports
+          path: /accounting/reports
+        - label: Journal Entries
+          path: /accounting/journal-entries
+        - label: Reconciliations
+          path: /accounting/reconciliations
+        - label: Tax Codes
+          path: /accounting/tax-codes
+        - label: Fiscal Periods
+          path: /accounting/fiscal-periods
+  
+  # Settings
+  settings:
+    - key: default_currency
+      type: select
+      label: Default Currency
+      options:
+        - value: USD
+          label: US Dollar
+        - value: EUR
+          label: Euro
+        - value: GBP
+          label: British Pound
+        - value: JPY
+          label: Japanese Yen
+        - value: CAD
+          label: Canadian Dollar
+      default: USD
+    - key: fiscal_year_start
+      type: select
+      label: Fiscal Year Start Month
+      options:
+        - value: 1
+          label: January
+        - value: 2
+          label: February
+        - value: 3
+          label: March
+        - value: 4
+          label: April
+        - value: 5
+          label: May
+        - value: 6
+          label: June
+        - value: 7
+          label: July
+        - value: 8
+          label: August
+        - value: 9
+          label: September
+        - value: 10
+          label: October
+        - value: 11
+          label: November
+        - value: 12
+          label: December
+      default: 1
+    - key: enable_multi_currency
+      type: boolean
+      label: Enable Multi-Currency
+      default: false
+    - key: default_tax_rate
+      type: number
+      label: Default Tax Rate (%)
+      default: 0
+    - key: enable_tax_codes
+      type: boolean
+      label: Enable Tax Codes
+      default: true
+    - key: require_approval_for_transactions
+      type: boolean
+      label: Require Approval for Transactions
+      default: false
+    - key: transaction_approval_amount
+      type: number
+      label: Require Approval for Transactions Above
+      default: 1000
+      depends_on:
+        require_approval_for_transactions: true
+    - key: enable_budget_tracking
+      type: boolean
+      label: Enable Budget Tracking
+      default: true
+    - key: budget_alert_threshold
+      type: number
+      label: Budget Alert Threshold (%)
+      default: 90
+      depends_on:
+        enable_budget_tracking: true
+    - key: enable_journal_entries
+      type: boolean
+      label: Enable Journal Entries
+      default: true
+    - key: require_approval_for_journal_entries
+      type: boolean
+      label: Require Approval for Journal Entries
+      default: true
+      depends_on:
+        enable_journal_entries: true
+    - key: enable_reconciliations
+      type: boolean
+      label: Enable Bank Reconciliations
+      default: true
+    - key: reconciliation_tolerance
+      type: number
+      label: Reconciliation Tolerance Amount
+      default: 0.01
+      depends_on:
+        enable_reconciliations: true
+    - key: enable_fiscal_periods
+      type: boolean
+      label: Enable Fiscal Periods
+      default: true
+    - key: fiscal_period_length
+      type: select
+      label: Fiscal Period Length
+      options:
+        - value: monthly
+          label: Monthly
+        - value: quarterly
+          label: Quarterly
+        - value: yearly
+          label: Yearly
+      default: monthly
+      depends_on:
+        enable_fiscal_periods: true
