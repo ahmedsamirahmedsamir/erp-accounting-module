@@ -561,3 +561,105 @@ func (h *AccountingHandler) GetIncomeStatement(w http.ResponseWriter, r *http.Re
 
 	sdk.WriteSuccess(w, incomeStatement)
 }
+
+// GetAnalytics retrieves aggregated analytics data for the accounting dashboard
+func (h *AccountingHandler) GetAnalytics(w http.ResponseWriter, r *http.Request) {
+	// Get totals for assets, liabilities, equity
+	var totalAssets, totalLiabilities, totalEquity float64
+	var totalRevenue, totalExpenses, netIncome float64
+	var grossProfit, operatingProfit float64
+	var currentRatio, quickRatio, debtToEquity float64
+	var returnOnEquity float64
+
+	// Assets
+	h.db.Get(&totalAssets, `
+		SELECT COALESCE(SUM(
+			CASE 
+				WHEN coa.account_type = 'asset' THEN atl.debit_amount - atl.credit_amount
+				ELSE 0
+			END
+		), 0) as balance
+		FROM chart_of_accounts coa
+		LEFT JOIN accounting_transaction_lines atl ON coa.id = atl.account_id
+		LEFT JOIN accounting_transactions at ON atl.transaction_id = at.id
+		WHERE coa.is_active = true AND coa.account_type = 'asset'
+	`)
+
+	// Liabilities
+	h.db.Get(&totalLiabilities, `
+		SELECT COALESCE(SUM(
+			CASE 
+				WHEN coa.account_type = 'liability' THEN atl.credit_amount - atl.debit_amount
+				ELSE 0
+			END
+		), 0) as balance
+		FROM chart_of_accounts coa
+		LEFT JOIN accounting_transaction_lines atl ON coa.id = atl.account_id
+		LEFT JOIN accounting_transactions at ON atl.transaction_id = at.id
+		WHERE coa.is_active = true AND coa.account_type = 'liability'
+	`)
+
+	// Equity
+	h.db.Get(&totalEquity, `
+		SELECT COALESCE(SUM(
+			CASE 
+				WHEN coa.account_type = 'equity' THEN atl.credit_amount - atl.debit_amount
+				ELSE 0
+			END
+		), 0) as balance
+		FROM chart_of_accounts coa
+		LEFT JOIN accounting_transaction_lines atl ON coa.id = atl.account_id
+		LEFT JOIN accounting_transactions at ON atl.transaction_id = at.id
+		WHERE coa.is_active = true AND coa.account_type = 'equity'
+	`)
+
+	// Revenue
+	h.db.Get(&totalRevenue, `
+		SELECT COALESCE(SUM(atl.credit_amount - atl.debit_amount), 0) as amount
+		FROM chart_of_accounts coa
+		JOIN accounting_transaction_lines atl ON coa.id = atl.account_id
+		JOIN accounting_transactions at ON atl.transaction_id = at.id
+		WHERE coa.is_active = true AND coa.account_type = 'revenue' AND at.status = 'posted'
+	`)
+
+	// Expenses
+	h.db.Get(&totalExpenses, `
+		SELECT COALESCE(SUM(atl.debit_amount - atl.credit_amount), 0) as amount
+		FROM chart_of_accounts coa
+		JOIN accounting_transaction_lines atl ON coa.id = atl.account_id
+		JOIN accounting_transactions at ON atl.transaction_id = at.id
+		WHERE coa.is_active = true AND coa.account_type = 'expense' AND at.status = 'posted'
+	`)
+
+	netIncome = totalRevenue - totalExpenses
+	grossProfit = totalRevenue
+	operatingProfit = netIncome
+
+	// Calculate ratios (simplified for demo)
+	if totalLiabilities != 0 {
+		currentRatio = totalAssets / totalLiabilities
+		quickRatio = totalAssets / totalLiabilities
+		debtToEquity = totalLiabilities / totalEquity
+	}
+
+	if totalEquity != 0 {
+		returnOnEquity = netIncome / totalEquity
+	}
+
+	analytics := map[string]interface{}{
+		"total_assets":         totalAssets,
+		"total_liabilities":    totalLiabilities,
+		"total_equity":         totalEquity,
+		"total_revenue":        totalRevenue,
+		"total_expenses":       totalExpenses,
+		"net_income":           netIncome,
+		"gross_profit":         grossProfit,
+		"operating_profit":     operatingProfit,
+		"current_ratio":        currentRatio,
+		"quick_ratio":          quickRatio,
+		"debt_to_equity_ratio": debtToEquity,
+		"return_on_equity":     returnOnEquity,
+	}
+
+	sdk.WriteSuccess(w, analytics)
+}

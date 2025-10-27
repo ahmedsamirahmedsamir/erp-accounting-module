@@ -55,8 +55,9 @@ export function FiscalPeriodList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['fiscal-periods'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as FiscalPeriod[];
+      const response = await fetch('/api/modules/accounting/fiscal-periods');
+      const result = await response.json();
+      return result.periods || [] as FiscalPeriod[];
     },
   });
 

@@ -4,91 +4,101 @@ import "time"
 
 // ChartOfAccount represents an account in the chart of accounts
 type ChartOfAccount struct {
-	ID              int       `json:"id"`
-	AccountCode     string    `json:"account_code"`
-	AccountName     string    `json:"account_name"`
-	AccountType     string    `json:"account_type"` // asset, liability, equity, revenue, expense
-	ParentID        *int      `json:"parent_id"`
-	Description     *string   `json:"description"`
-	IsActive        bool      `json:"is_active"`
-	IsSystemAccount bool      `json:"is_system_account"`
-	CreatedAt       time.Time `json:"created_at"`
-	UpdatedAt       time.Time `json:"updated_at"`
+	ID              int       `json:"id" db:"id"`
+	TenantID        *string   `json:"tenant_id,omitempty" db:"tenant_id"`
+	CompanyID       *string   `json:"company_id,omitempty" db:"company_id"`
+	AccountCode     string    `json:"account_code" db:"account_code"`
+	AccountName     string    `json:"account_name" db:"account_name"`
+	AccountType     string    `json:"account_type" db:"account_type"` // asset, liability, equity, revenue, expense
+	ParentID        *int      `json:"parent_id" db:"parent_id"`
+	Description     *string   `json:"description" db:"description"`
+	IsActive        bool      `json:"is_active" db:"is_active"`
+	IsSystemAccount bool      `json:"is_system_account" db:"is_system_account"`
+	CreatedAt       time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at" db:"updated_at"`
 }
 
 // AccountingTransaction represents a financial transaction
 type AccountingTransaction struct {
-	ID                int                         `json:"id"`
-	TransactionNumber string                      `json:"transaction_number"`
-	TransactionDate   time.Time                   `json:"transaction_date"`
-	ReferenceType     *string                     `json:"reference_type"`
-	ReferenceID       *int                        `json:"reference_id"`
-	Description       *string                     `json:"description"`
-	TotalAmount       float64                     `json:"total_amount"`
-	Currency          string                      `json:"currency"`
-	Status            string                      `json:"status"`
-	CreatedBy         int                         `json:"created_by"`
-	CreatedAt         time.Time                   `json:"created_at"`
-	UpdatedAt         time.Time                   `json:"updated_at"`
+	ID                int                         `json:"id" db:"id"`
+	TenantID          string                      `json:"tenant_id" db:"tenant_id"`
+	CompanyID         *string                     `json:"company_id,omitempty" db:"company_id"`
+	TransactionNumber string                      `json:"transaction_number" db:"transaction_number"`
+	TransactionDate   time.Time                   `json:"transaction_date" db:"transaction_date"`
+	ReferenceType     *string                     `json:"reference_type" db:"reference_type"`
+	ReferenceID       *int                        `json:"reference_id" db:"reference_id"`
+	Description       *string                     `json:"description" db:"description"`
+	TotalAmount       float64                     `json:"total_amount" db:"total_amount"`
+	Currency          string                      `json:"currency" db:"currency"`
+	Status            string                      `json:"status" db:"status"`
+	CreatedBy         int                         `json:"created_by" db:"created_by"`
+	CreatedAt         time.Time                   `json:"created_at" db:"created_at"`
+	UpdatedAt         time.Time                   `json:"updated_at" db:"updated_at"`
 	Lines             []AccountingTransactionLine `json:"lines,omitempty"`
 }
 
 // AccountingTransactionLine represents a line in a transaction
 type AccountingTransactionLine struct {
-	ID            int             `json:"id"`
-	TransactionID int             `json:"transaction_id"`
-	AccountID     int             `json:"account_id"`
-	DebitAmount   float64         `json:"debit_amount"`
-	CreditAmount  float64         `json:"credit_amount"`
-	Description   *string         `json:"description"`
-	CreatedAt     time.Time       `json:"created_at"`
+	ID            int             `json:"id" db:"id"`
+	TenantID      string          `json:"tenant_id" db:"tenant_id"`
+	TransactionID int             `json:"transaction_id" db:"transaction_id"`
+	AccountID     int             `json:"account_id" db:"account_id"`
+	DebitAmount   float64         `json:"debit_amount" db:"debit_amount"`
+	CreditAmount  float64         `json:"credit_amount" db:"credit_amount"`
+	Description   *string         `json:"description" db:"description"`
+	CreatedAt     time.Time       `json:"created_at" db:"created_at"`
 	Account       *ChartOfAccount `json:"account,omitempty"`
 }
 
 // JournalEntry represents a journal entry
 type JournalEntry struct {
-	ID          int                `json:"id"`
-	EntryNumber string             `json:"entry_number"`
-	EntryDate   time.Time          `json:"entry_date"`
-	Description *string            `json:"description"`
-	Reference   *string            `json:"reference"`
-	TotalDebit  float64            `json:"total_debit"`
-	TotalCredit float64            `json:"total_credit"`
-	Status      string             `json:"status"`
-	CreatedBy   int                `json:"created_by"`
-	ApprovedBy  *int               `json:"approved_by"`
-	ApprovedAt  *time.Time         `json:"approved_at"`
-	CreatedAt   time.Time          `json:"created_at"`
-	UpdatedAt   time.Time          `json:"updated_at"`
+	ID          int                `json:"id" db:"id"`
+	TenantID    string             `json:"tenant_id" db:"tenant_id"`
+	CompanyID   string             `json:"company_id" db:"company_id"`
+	EntryNumber string             `json:"entry_number" db:"entry_number"`
+	EntryDate   time.Time          `json:"entry_date" db:"entry_date"`
+	Description *string            `json:"description" db:"description"`
+	Reference   *string            `json:"reference" db:"reference"`
+	TotalDebit  float64            `json:"total_debit" db:"total_debit"`
+	TotalCredit float64            `json:"total_credit" db:"total_credit"`
+	Status      string             `json:"status" db:"status"`
+	CreatedBy   int                `json:"created_by" db:"created_by"`
+	ApprovedBy  *int               `json:"approved_by" db:"approved_by"`
+	ApprovedAt  *time.Time         `json:"approved_at" db:"approved_at"`
+	CreatedAt   time.Time          `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time          `json:"updated_at" db:"updated_at"`
 	Lines       []JournalEntryLine `json:"lines,omitempty"`
 }
 
 // JournalEntryLine represents a line in a journal entry
 type JournalEntryLine struct {
-	ID             int             `json:"id"`
-	JournalEntryID int             `json:"journal_entry_id"`
-	AccountID      int             `json:"account_id"`
-	DebitAmount    float64         `json:"debit_amount"`
-	CreditAmount   float64         `json:"credit_amount"`
-	Description    *string         `json:"description"`
-	CreatedAt      time.Time       `json:"created_at"`
+	ID             int             `json:"id" db:"id"`
+	TenantID       string          `json:"tenant_id" db:"tenant_id"`
+	JournalEntryID int             `json:"journal_entry_id" db:"entry_id"`
+	AccountID      int             `json:"account_id" db:"account_id"`
+	DebitAmount    float64         `json:"debit_amount" db:"debit_amount"`
+	CreditAmount   float64         `json:"credit_amount" db:"credit_amount"`
+	Description    *string         `json:"description" db:"description"`
+	CreatedAt      time.Time       `json:"created_at" db:"created_at"`
 	Account        *ChartOfAccount `json:"account,omitempty"`
 }
 
 // AccountingBudget represents a budget for an account
 type AccountingBudget struct {
-	ID              int             `json:"id"`
-	BudgetName      string          `json:"budget_name"`
-	FiscalYear      int             `json:"fiscal_year"`
-	FiscalPeriod    int             `json:"fiscal_period"`
-	AccountID       int             `json:"account_id"`
-	BudgetAmount    float64         `json:"budget_amount"`
-	ActualAmount    float64         `json:"actual_amount"`
-	VarianceAmount  float64         `json:"variance_amount"`
-	VariancePercent float64         `json:"variance_percent"`
-	CreatedBy       int             `json:"created_by"`
-	CreatedAt       time.Time       `json:"created_at"`
-	UpdatedAt       time.Time       `json:"updated_at"`
+	ID              int             `json:"id" db:"id"`
+	TenantID        string          `json:"tenant_id" db:"tenant_id"`
+	CompanyID       string          `json:"company_id" db:"company_id"`
+	BudgetName      string          `json:"budget_name" db:"budget_name"`
+	FiscalYear      int             `json:"fiscal_year" db:"fiscal_year"`
+	FiscalPeriod    int             `json:"fiscal_period" db:"fiscal_period"`
+	AccountID       int             `json:"account_id" db:"account_id"`
+	BudgetAmount    float64         `json:"budget_amount" db:"budget_amount"`
+	ActualAmount    float64         `json:"actual_amount" db:"actual_amount"`
+	VarianceAmount  float64         `json:"variance_amount" db:"variance_amount"`
+	VariancePercent float64         `json:"variance_percent" db:"variance_percent"`
+	CreatedBy       int             `json:"created_by" db:"created_by"`
+	CreatedAt       time.Time       `json:"created_at" db:"created_at"`
+	UpdatedAt       time.Time       `json:"updated_at" db:"updated_at"`
 	Account         *ChartOfAccount `json:"account,omitempty"`
 }
 

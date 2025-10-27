@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { api } from '@erp-modules/shared';
 
 interface Transaction {
   id: string;
@@ -46,8 +47,8 @@ export function TransactionList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['accounting-transactions'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as Transaction[];
+      const response = await api.get<{ transactions: Transaction[] }>('/api/modules/accounting/transactions');
+      return response.transactions || [];
     },
   });
 

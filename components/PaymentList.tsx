@@ -53,8 +53,9 @@ export function PaymentList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['accounting-payments'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as Payment[];
+      const response = await fetch('/api/modules/accounting/payments');
+      const result = await response.json();
+      return result.payments || [] as Payment[];
     },
   });
 

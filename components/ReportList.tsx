@@ -48,8 +48,9 @@ export function ReportList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['accounting-reports'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as Report[];
+      const response = await fetch('/api/modules/accounting/reports');
+      const result = await response.json();
+      return result.reports || [] as Report[];
     },
   });
 

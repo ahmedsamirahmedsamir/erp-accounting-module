@@ -54,8 +54,9 @@ export function ReconciliationList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['reconciliations'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as Reconciliation[];
+      const response = await fetch('/api/modules/accounting/reconciliations');
+      const result = await response.json();
+      return result.reconciliations || [] as Reconciliation[];
     },
   });
 

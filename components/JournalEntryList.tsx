@@ -52,8 +52,9 @@ export function JournalEntryList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['journal-entries'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as JournalEntry[];
+      const response = await fetch('/api/modules/accounting/journal-entries');
+      const result = await response.json();
+      return result.entries || [] as JournalEntry[];
     },
   });
 

@@ -1,28 +1,52 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import federation from '@originjs/vite-plugin-federation'
 import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [react()],
-  build: {
-    lib: {
-      entry: resolve(__dirname, 'components/index.ts'),
-      name: 'AccountingModule',
-      formats: ['es'],
-      fileName: 'accounting'
-    },
-    rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@erp-modules/shared'],
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          '@erp-modules/shared': 'ERPModulesShared'
-        }
+  plugins: [
+    react(),
+    federation({
+      name: 'accounting',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './AccountingDashboard': './components/AccountingDashboard',
+        './ChartOfAccounts': './components/ChartOfAccounts',
+      },
+      shared: {
+        'react': { 
+          singleton: true, 
+          requiredVersion: '^18.2.0'
+        },
+        'react-dom': { 
+          singleton: true, 
+          requiredVersion: '^18.2.0'
+        },
       }
-    },
+    })
+  ],
+  build: {
+    target: 'esnext',
+    minify: false,
+    cssCodeSplit: true,
     sourcemap: true,
-    outDir: 'dist'
+    outDir: 'dist',
+    rollupOptions: {
+      external: [
+        'lucide-react',
+        '@tanstack/react-query',
+        '@tanstack/react-router',
+        '@tanstack/react-form',
+        'react-hot-toast',
+        'date-fns',
+        'zod',
+        'axios'
+      ],
+      output: {
+        format: 'es',
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+      }
+    }
   }
 })
-

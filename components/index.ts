@@ -1,3 +1,31 @@
-export { AdvancedAccountingManagement as AccountingDashboard } from './AccountingDashboard'
-export { ChartOfAccounts } from './ChartOfAccounts'
+// Main tabbed interface
+export { default as AccountingDashboard } from './AccountingDashboard'
 
+// Core Components
+export { ChartOfAccounts } from './ChartOfAccounts'
+export { default as BudgetForm } from './BudgetForm'
+export { default as BudgetList } from './BudgetList'
+export { default as FiscalPeriodList } from './FiscalPeriodList'
+export { default as InvoiceForm } from './InvoiceForm'
+export { default as InvoiceList } from './InvoiceList'
+export { default as JournalEntryForm } from './JournalEntryForm'
+export { default as JournalEntryList } from './JournalEntryList'
+export { default as PaymentForm } from './PaymentForm'
+export { default as PaymentList } from './PaymentList'
+export { default as ReconciliationList } from './ReconciliationList'
+export { default as ReportList } from './ReportList'
+export { default as TaxCodeList } from './TaxCodeList'
+export { default as TransactionForm } from './TransactionForm'
+export { default as TransactionList } from './TransactionList'
+
+// Tab Components
+export { default as AccountsTab } from './tabs/AccountsTab'
+export { default as BudgetsTab } from './tabs/BudgetsTab'
+export { default as FiscalPeriodsTab } from './tabs/FiscalPeriodsTab'
+export { default as InvoicesTab } from './tabs/InvoicesTab'
+export { default as OverviewTab } from './tabs/OverviewTab'
+export { default as PaymentsTab } from './tabs/PaymentsTab'
+export { default as ReconciliationsTab } from './tabs/ReconciliationsTab'
+export { default as ReportsTab } from './tabs/ReportsTab'
+export { default as TaxCodesTab } from './tabs/TaxCodesTab'
+export { default as TransactionsTab } from './tabs/TransactionsTab'

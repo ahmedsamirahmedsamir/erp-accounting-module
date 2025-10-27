@@ -62,8 +62,9 @@ export function BudgetList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['accounting-budgets'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as Budget[];
+      const response = await fetch('/api/modules/accounting/budgets');
+      const result = await response.json();
+      return result.budgets || [] as Budget[];
     },
   });
 

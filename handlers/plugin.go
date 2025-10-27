@@ -74,13 +74,15 @@ func (p *AccountingPlugin) Cleanup() error {
 
 // GetHandler returns a handler function for a given route and method
 func (p *AccountingPlugin) GetHandler(route string, method string) (http.HandlerFunc, error) {
+	// Normalize route by removing leading slash if present
 	route = strings.TrimPrefix(route, "/")
 	method = strings.ToUpper(method)
 
 	// Map routes to handlers
 	handlers := p.buildHandlerMap()
 
-	key := method + " " + route
+	// Try exact match first
+	key := method + " /" + route
 	if handler, ok := handlers[key]; ok {
 		return handler, nil
 	}
@@ -92,7 +94,7 @@ func (p *AccountingPlugin) GetHandler(route string, method string) (http.Handler
 		}
 	}
 
-	return nil, fmt.Errorf("handler not found for route: %s %s", method, route)
+	return nil, fmt.Errorf("handler not found for route: %s /%s", method, route)
 }
 
 // buildHandlerMap creates the mapping of routes to handlers
@@ -115,6 +117,9 @@ func (p *AccountingPlugin) buildHandlerMap() map[string]http.HandlerFunc {
 		// Reports
 		"GET /reports/balance-sheet":    p.handler.GetBalanceSheet,
 		"GET /reports/income-statement": p.handler.GetIncomeStatement,
+
+		// Analytics
+		"GET /analytics": p.handler.GetAnalytics,
 	}
 }
 
@@ -155,4 +160,4 @@ func (p *AccountingPlugin) matchRoute(pattern, actual string) bool {
 
 // Handler is the exported symbol that the plugin loader looks for
 // It must return a PluginHandler interface that implements our methods
-var Handler = NewAccountingPlugin
+func Handler() sdk.ModulePlugin { return NewAccountingPlugin() }

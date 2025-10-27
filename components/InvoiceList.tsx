@@ -60,8 +60,9 @@ export function InvoiceList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['accounting-invoices'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as Invoice[];
+      const response = await fetch('/api/modules/accounting/invoices');
+      const result = await response.json();
+      return result.invoices || [] as Invoice[];
     },
   });
 

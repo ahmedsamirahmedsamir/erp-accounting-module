@@ -51,8 +51,9 @@ export function TaxCodeList() {
   const { data = [], isLoading } = useQuery({
     queryKey: ['tax-codes'],
     queryFn: async () => {
-      // TODO: Replace with actual API call
-      return [] as TaxCode[];
+      const response = await fetch('/api/modules/accounting/tax-codes');
+      const result = await response.json();
+      return result.tax_codes || [] as TaxCode[];
     },
   });
 
